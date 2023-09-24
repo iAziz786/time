@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="icon" href="https://iaziz786.com/favicon.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://iaziz786.com/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://iaziz786.com/favicon.svg">
+  <link rel="apple-touch-icon" href="https://iaziz786.com/favicon.svg">
+  <link rel="mask-icon" href="https://iaziz786.com/favicon.svg">
+  <title>Time is limited.</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #E25E3E;
+      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+      ;
+    }
+
+    .progress-container {
+      width: 400px;
+      height: 50px;
+      background: #FFBB5C;
+      margin: 20px 0;
+      border: 5px solid black;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #C63D2F;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .progress-text {
+      font-size: 20px;
+      margin-bottom: 5px;
+      color: #FFF5E0;
+      text-align: center;
+    }
+
+    .progress-main {
+      margin: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-main">
+    <h1 class="progress-text">Time is limited.</h1>
+    <div class="progress-text" id="yearText"></div>
+    <div class="progress-container">
+      <div class="progress-bar" id="yearProgress"></div>
+    </div>
+
+    <div class="progress-text" id="dayText"></div>
+    <div class="progress-container">
+      <div class="progress-bar" id="dayProgress"></div>
+    </div>
+  </div>
+
+  <script>
+    const calculateProgress = (start, end, current) => {
+      const totalDuration = end - start;
+      const elapsed = current - start;
+      return (elapsed / totalDuration) * 100;
+    };
+
+    const updateProgress = () => {
+      const now = new Date();
+      const yearStart = new Date(now.getFullYear(), 0, 1);
+      const yearEnd = new Date(now.getFullYear() + 1, 0, 1);
+      const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const dayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+      const yearProgress = calculateProgress(yearStart, yearEnd, now);
+      const dayProgress = calculateProgress(dayStart, dayEnd, now);
+
+      // Update year progress
+      document.getElementById('yearText').innerText = `Year Progress: ${yearProgress.toFixed(6)}%`;
+      document.getElementById('yearProgress').style.width = `${yearProgress}%`;
+
+      // Update day progress
+      document.getElementById('dayText').innerText = `Day Progress: ${dayProgress.toFixed(4)}%`;
+      document.getElementById('dayProgress').style.width = `${dayProgress}%`;
+
+      // Request the next frame
+      requestAnimationFrame(updateProgress);
+    };
+
+    // Initial update and set up continuous updates
+    updateProgress();
+  </script>
+
+</body>
+
+</html>
